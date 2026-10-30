@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ລະບົບຮຽນພາສາຈີນ - Chinese Vocabulary App</title>
+    <style>
+        :root {
+            --primary-color: #c0392b;
+            --secondary-color: #e74c3c;
+            --bg-color: #f4f6f9;
+            --text-color: #333;
+        }
+        body { font-family: 'Phetsarath OT', Arial, sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; color: var(--text-color); }
+        header { background-color: var(--primary-color); color: white; padding: 20px; text-align: center; }
+        .container { max-width: 900px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        /* Menu Tabs */
+        .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .tab-btn { padding: 10px 20px; border: none; background: #ddd; cursor: pointer; font-size: 16px; border-radius: 5px; font-weight: bold; }
+        .tab-btn.active { background: var(--primary-color); color: white; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Controls */
+        .controls { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        input, select { padding: 10px; font-size: 15px; border: 1px solid #ccc; border-radius: 5px; flex: 1; }
+        button.action-btn { background: #27ae60; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        
+        /* Table */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        th { background-color: #f2f2f2; }
+        img.vocab-img { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; }
+        
+        /* Game Section */
+        .game-card { background: #fff5f5; border: 2px dashed var(--primary-color); padding: 20px; border-radius: 10px; text-align: center; margin-top: 20px; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .option-btn { padding: 12px; background: white; border: 1px solid var(--primary-color); color: var(--primary-color); font-size: 16px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .option-btn:hover { background: var(--primary-color); color: white; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🇨🇳 ລະບົບຈັດການ ແລະ ຮຽນຄຳສັບພາສາຈີນ</h1>
+</header>
+
+<div class="container">
+    <!-- Tab Navigation -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('vocab')">📚 ຈັດການຄຳສັບ</button>
+        <button class="tab-btn" onclick="switchTab('game')">🎮 ເກມທວນຄືນ (Quiz)</button>
+    </div>
+
+    <!-- TAB 1: Vocab Management -->
+    <div id="vocab" class="tab-content active">
+        <h3>ເພີ່ມ / ຄົ້ນຫາ ຄຳສັບ</h3>
+        <div class="controls">
+            <input type="text" id="searchBox" placeholder="🔍 ຄົ້ນຫາ (ຈີນ, ພິນອິນ, ລາວ)..." onkeyup="renderTable()">
+            <select id="categoryFilter" onchange="renderTable()">
+                <option value="">ທຸກໝວດໝູ່</option>
+                <option value="ທັກທາຍ">ທັກທາຍ</option>
+                <option value="ອາຫານ">ອາຫານ</option>
+                <option value="ຕົວເລກ">ຕົວເລກ</option>
+                <option value="ທົ່ວໄປ">ທົ່ວໄປ</option>
+            </select>
+        </div>
+
+        <div class="controls" style="background: #f9f9f9; padding: 15px; border-radius: 8px;">
+            <input type="text" id="inputHanzi" placeholder="ຕົວຈີນ (ເຊັ່ນ: 你好)">
+            <input type="text" id="inputPinyin" placeholder="ພິນອິນ (ເຊັ່ນ: nǐ hǎo)">
+            <input type="text" id="inputLao" placeholder="ຄຳແປລາວ (ເຊັ່ນ: ສະບາຍດີ)">
+            <select id="inputCategory">
+                <option value="ທັກທາຍ">ທັກທາຍ</option>
+                <option value="ອາຫານ">ອາຫານ</option>
+                <option value="ຕົວເລກ">ຕົວເລກ</option>
+                <option value="ທົ່ວໄປ">ທົ່ວໄປ</option>
+            </select>
+            <input type="text" id="inputImg" placeholder="Link ຮູບພາບ (URL ຖ້າມີ)">
+            <button class="action-btn" onclick="addVocab()">➕ ເພີ່ມຄຳສັບ</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ຮູບ</th>
+                    <th>ຕົວຈີນ</th>
+                    <th>ພິນອິນ</th>
+                    <th>ຄຳແປລາວ</th>
+                    <th>ໝວດໝູ່</th>
+                    <th>ຈັດການ</th>
+                </tr>
+            </thead>
+            <tbody id="vocabTableBody">
+                <!-- Data will load here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TAB 2: Quiz Game -->
+    <div id="game" class="tab-content">
+        <h3>🎮 ເກມທົດສອບຄວາມຈຳ (Quiz)</h3>
+        <div class="game-card">
+            <h4 id="questionText">ກົດປຸ່ມເລີ່ມເກມເພື່ອທວນຄືນຄຳສັບ!</h4>
+            <div id="quizContainer" style="display:none;">
+                <h1 id="quizWord" style="color: var(--primary-color); font-size: 40px;"></h1>
+                <div class="options-grid" id="optionsGrid"></div>
+            </div>
+            <button class="action-btn" id="startQuizBtn" onclick="startQuiz()" style="margin-top: 15px; padding: 12px 25px; font-size: 18px;">🚀 ເລີ່ມເກມ</button>
+            <p id="scoreText" style="font-weight: bold; margin-top: 15px;"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ໂຫຼດຂໍ້ມູນຈາກ LocalStorage (ຖ້າ ບໍ່ມີ ໃຫ້ເອົາຄຳສັບເລີ່ມຕົ້ນ)
+    let vocabList = JSON.parse(localStorage.getItem('chinese_vocab')) || [
+        { id: 1, hanzi: "你好", pinyin: "nǐ hǎo", lao: "ສະບາຍດີ", category: "ທັກທາຍ", img: "" },
+        { id: 2, hanzi: "谢谢", pinyin: "xiè xie", lao: "ຂອບໃຈ", category: "ທັກທາຍ", img: "" },
+        { id: 3, hanzi: "水", pinyin: "shuǐ", lao: "ນ້ຳ", category: "ອາຫານ", img: "" }
+    ];
+
+    function saveToStorage() {
+        localStorage.setItem('chinese_vocab', JSON.stringify(vocabList));
+    }
+
+    // Switch Tabs
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+        if(tabId === 'game') { resetQuiz(); }
+    }
+
+    // Render Table
+    function renderTable() {
+        const searchVal = document.getElementById('searchBox').value.toLowerCase();
+        const catVal = document.getElementById('categoryFilter').value;
+        const tbody = document.getElementById('vocabTableBody');
+        tbody.innerHTML = '';
+
+        const filtered = vocabList.filter(item => {
+            const matchSearch = item.hanzi.toLowerCase().includes(searchVal) || 
+                                item.pinyin.toLowerCase().includes(searchVal) || 
+                                item.lao.toLowerCase().includes(searchVal);
+            const matchCat = catVal === "" || item.category === catVal;
+            return matchSearch && matchCat;
+        });
+
+        filtered.forEach(item => {
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><img src="${item.img || 'https://via.placeholder.com/50'}" class="vocab-img" onerror="this.src='https://via.placeholder.com/50'"></td>
+                <td style="font-size: 18px; font-weight: bold;">${item.hanzi}</td>
+                <td style="color: #e67e22; font-style: italic;">${item.pinyin}</td>
+                <td>${item.lao}</td>
+                <td>${item.category}</td>
+                <td>
+                    <button onclick="deleteVocab(${item.id})" style="background:#e74c3c; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer;">ລົບ</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // Add Vocab
+    function addVocab() {
+        const hanzi = document.getElementById('inputHanzi').value.trim();
+        const pinyin = document.getElementById('inputPinyin').value.trim();
+        const lao = document.getElementById('inputLao').value.trim();
+        const category = document.getElementById('inputCategory').value;
+        const img = document.getElementById('inputImg').value.trim();
+
+        if(!hanzi || !pinyin || !lao) {
+            alert('ກະລຸນາໃສ່ຂໍ້ມູນ ຕົວຈີນ, ພິນອິນ ແລະ ຄຳແປ ໃຫ້ครบ!');
+            return;
+        }
+
+        const newItem = {
+            id: Date.now(),
+            hanzi, pinyin, lao, category, img
+        };
+
+        vocabList.push(newItem);
+        saveToStorage();
+        renderTable();
+
+        // Clear inputs
+        document.getElementById('inputHanzi').value = '';
+        document.getElementById('inputPinyin').value = '';
+        document.getElementById('inputLao').value = '';
+        document.getElementById('inputImg').value = '';
+    }
+
+    // Delete Vocab
+    function deleteVocab(id) {
+        if(confirm('ທ່ານຕ້ອງການລົບຄຳສັບນີ້ແທ້ບໍ?')) {
+            vocabList = vocabList.filter(item => item.id !== id);
+            saveToStorage();
+            renderTable();
+        }
+    }
+
+    // Quiz Game Logic
+    let currentScore = 0;
+    let currentQuestion = null;
+
+    function startQuiz() {
+        if(vocabList.length < 2) {
+            alert('ຕ້ອງມີຄຳສັບຢ່າງໜ້ອຍ 2 ຄຳຂຶ້ນໄປ ຈຶ່ງສາມາດຫຼິ້ນເກມໄດ້!');
+            return;
+        }
+        document.getElementById('startQuizBtn').innerText = 'ຫຼິ້ນຕໍ່ (Next)';
+        document.getElementById('quizContainer').style.display = 'block';
+        document.getElementById('scoreText').innerText = `ຄະແນນ: ${currentScore}`;
+        
+        // Random Question
+        currentQuestion = vocabList[Math.floor(Math.random() * vocabList.length)];
+        document.getElementById('questionText').innerText = `ຄຳແປພາສາລາວນີ້ ແມ່ນໂຕຈີນໂຕໃດ?`;
+        document.getElementById('quizWord').innerText = `"${currentQuestion.lao}"`;
+
+        // Generate Options (1 correct, 3 random wrong)
+        let options = [currentQuestion];
+        while(options.length < 4 && options.length < vocabList.length) {
+            let randomItem = vocabList[Math.floor(Math.random() * vocabList.length)];
+            if(!options.includes(randomItem)) { options.push(randomItem); }
+        }
+        options.sort(() => Math.random() - 0.5); // Shuffle
+
+        const grid = document.getElementById('optionsGrid');
+        grid.innerHTML = '';
+        options.forEach(opt => {
+            let btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = `${opt.hanzi} (${opt.pinyin})`;
+            btn.onclick = () => checkAnswer(opt.id);
+            grid.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selectedId) {
+        if(selectedId === currentQuestion.id) {
+            currentScore += 10;
+            alert('🎉 ຕອບຖືກຕ້ອງ!');
+        } else {
+            alert(`❌ ຕອບຜິດ! ຄຳຕອບທີ່ຖືກຕ້ອງແມ່ນ: ${currentQuestion.hanzi} (${currentQuestion.pinyin})`);
+        }
+        startQuiz();
+    }
+
+    function resetQuiz() {
+        currentScore = 0;
+        document.getElementById('quizContainer').style.display = 'none';
+        document.getElementById('startQuizBtn').innerText = '🚀 ເລີ່ມເກມ';
+        document.getElementById('scoreText').innerText = '';
+    }
+
+    // Init load
+    renderTable();
+</script>
+
+</body>
+</html>
