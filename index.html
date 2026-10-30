@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TC Leyssk ລະບົບຈັດການ ແລະ ຮຽນຄຳສັບພາສາຈີນ</title>
+    <title>ລະບົບຮຽນພາສາຈີນ - Chinese Vocabulary App</title>
     <style>
         :root {
             --primary-color: #c0392b;
@@ -30,9 +30,9 @@
         
         /* Table */
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
         th { background-color: #f2f2f2; }
-        img.vocab-img { width: 45px; height: 45px; object-fit: contain; }
+        img.vocab-img { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; }
         
         /* Game Section */
         .game-card { background: #fff5f5; border: 2px dashed var(--primary-color); padding: 20px; border-radius: 10px; text-align: center; margin-top: 20px; }
@@ -46,7 +46,7 @@
 <body>
 
 <header>
-    <h1>TC Leyssk ລະບົບຈັດການ ແລະ ຮຽນຄຳສັບພາສາຈີນ</h1>
+    <h1>🇨🇳 ລະບົບຈັດການ ແລະ ຮຽນຄຳສັບພາສາຈີນ</h1>
 </header>
 
 <div class="container">
@@ -63,15 +63,10 @@
             <input type="text" id="searchBox" placeholder="🔍 ຄົ້ນຫາ (ຈີນ, ພິນອິນ, ລາວ)..." onkeyup="renderTable()">
             <select id="categoryFilter" onchange="renderTable()">
                 <option value="">ທຸກໝວດໝູ່</option>
-                <option value="ພື້ນຖານ ແລະ ການທັກທາຍ">ພື້ນຖານ ແລະ ການທັກທາຍ</option>
-                <option value="ຄຳສັບຊີວິດປະຈຳວັນ">ຄຳສັບຊີວິດປະຈຳວັນ</option>
+                <option value="ທັກທາຍ">ທັກທາຍ</option>
                 <option value="ອາຫານ">ອາຫານ</option>
-                <option value="ເຄື່ອງນຸ່ງ">ເຄື່ອງນຸ່ງ</option>
-                <option value="ຕົວເລກ ແລະ ສີ">ຕົວເລກ ແລະ ສີ</option>
-                <option value="ສະຖານທີ່ ແລະ ການເດີນທາງ">ສະຖານທີ່ ແລະ ການເດີນທາງ</option>
-                <option value="ການສຶກສາ">ການສຶກສາ</option>
-                <option value="ທຳມະຊາດ ແລະ ສະພາບດິນຟ້າອາກາດ">ທຳມະຊາດ ແລະ ສະພາບດິນຟ້າອາກາດ</option>
-                <option value="ຄຳສັບເຮັດວຽກທາງການ">ຄຳສັບເຮັດວຽກທາງການ</option>
+                <option value="ຕົວເລກ">ຕົວເລກ</option>
+                <option value="ທົ່ວໄປ">ທົ່ວໄປ</option>
             </select>
         </div>
 
@@ -88,15 +83,10 @@
             <input type="text" id="inputPinyin" placeholder="ພິນອິນ (ເຊັ່ນ: nǐ hǎo)">
             <input type="text" id="inputLao" placeholder="ຄຳແປລາວ (ເຊັ່ນ: ສະບາຍດີ)">
             <select id="inputCategory">
-                <option value="ພື້ນຖານ ແລະ ການທັກທາຍ">ພື້ນຖານ ແລະ ການທັກທາຍ</option>
-                <option value="ຄຳສັບຊີວິດປະຈຳວັນ">ຄຳສັບຊີວິດປະຈຳວັນ</option>
+                <option value="ທັກທາຍ">ທັກທາຍ</option>
                 <option value="ອາຫານ">ອາຫານ</option>
-                <option value="ເຄື່ອງນຸ່ງ">ເຄື່ອງນຸ່ງ</option>
-                <option value="ຕົວເລກ ແລະ ສີ">ຕົວເລກ ແລະ ສີ</option>
-                <option value="ສະຖານທີ່ ແລະ ການເດີນທາງ">ສະຖານທີ່ ແລະ ການເດີນທາງ</option>
-                <option value="ການສຶກສາ">ການສຶກສາ</option>
-                <option value="ທຳມະຊາດ ແລະ ສະພາບດິນຟ້າອາກາດ">ທຳມະຊາດ ແລະ ສະພາບດິນຟ້າອາກາດ</option>
-                <option value="ຄຳສັບເຮັດວຽກທາງການ">ຄຳສັບເຮັດວຽກທາງການ</option>
+                <option value="ຕົວເລກ">ຕົວເລກ</option>
+                <option value="ທົ່ວໄປ">ທົ່ວໄປ</option>
             </select>
             <input type="text" id="inputImg" placeholder="Link ຮູບພາບ (URL ຖ້າມີ)">
             <button class="action-btn" onclick="addVocab()">➕ ເພີ່ມຄຳສັບ</button>
@@ -136,9 +126,9 @@
 
 <script>
     let vocabList = JSON.parse(localStorage.getItem('chinese_vocab')) || [
-        { id: 1, hanzi: "你好", pinyin: "nǐ hǎo", lao: "ສະບາຍດີ", category: "ພື້ນຖານ ແລະ ການທັກທາຍ", img: "https://api.iconify.design/fluent-emoji:waving-hand.svg" },
-        { id: 2, hanzi: "谢谢", pinyin: "xiè xie", lao: "ຂອບໃຈ", category: "ພື້ນຖານ ແລະ ການທັກທາຍ", img: "https://api.iconify.design/fluent-emoji:folded-hands.svg" },
-        { id: 3, hanzi: "水", pinyin: "shuǐ", lao: "ນ້ຳ", category: "ອາຫານ", img: "https://api.iconify.design/fluent-emoji:pot-of-food.svg" }
+        { id: 1, hanzi: "你好", pinyin: "nǐ hǎo", lao: "ສະບາຍດີ", category: "ທັກທາຍ", img: "" },
+        { id: 2, hanzi: "谢谢", pinyin: "xiè xie", lao: "ຂອບໃຈ", category: "ທັກທາຍ", img: "" },
+        { id: 3, hanzi: "水", pinyin: "shuǐ", lao: "ນ້ຳ", category: "ອາຫານ", img: "" }
     ];
 
     function saveToStorage() {
@@ -170,7 +160,7 @@
         filtered.forEach(item => {
             let tr = document.createElement('tr');
             tr.innerHTML = `
-                <td><img src="${item.img || 'https://api.iconify.design/fluent-emoji:memo.svg'}" class="vocab-img" onerror="this.src='https://api.iconify.design/fluent-emoji:memo.svg'"></td>
+                <td><img src="${item.img || 'https://via.placeholder.com/50'}" class="vocab-img" onerror="this.src='https://via.placeholder.com/50'"></td>
                 <td style="font-size: 18px; font-weight: bold;">${item.hanzi}</td>
                 <td style="color: #e67e22; font-style: italic;">${item.pinyin}</td>
                 <td>${item.lao}</td>
@@ -205,6 +195,7 @@
         document.getElementById('inputImg').value = '';
     }
 
+    // ຟັງຊັນອ່ານໄຟລ໌ CSV ຈາກ Excel
     function uploadCSV() {
         const fileInput = document.getElementById('csvFileInput');
         const file = fileInput.files[0];
@@ -218,10 +209,9 @@
             const text = e.target.result;
             const lines = text.split('\n');
             let count = 0;
-            vocabList = []; // Replace with imported dataset
 
             lines.forEach((line, index) => {
-                if (index === 0) return; 
+                if (index === 0) return; // ข้ามแถວหัวข้อ (Header)
                 if (!line.trim()) return;
                 
                 const cols = line.split(',').map(c => c.trim());
@@ -231,7 +221,7 @@
                         hanzi: cols[0],
                         pinyin: cols[1],
                         lao: cols[2],
-                        category: cols[3] || 'ພື້ນຖານ ແລະ ການທັກທາຍ',
+                        category: cols[3] || 'ທົ່ວໄປ',
                         img: cols[4] || ''
                     });
                     count++;
